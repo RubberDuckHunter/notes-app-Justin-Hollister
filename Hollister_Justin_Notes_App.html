@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vue Notes App</title>
+  <!-- Vue 3 -->
+  <script src="https://unpkg.com/vue@3"></script>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <div id="app" class="container py-5">
+    <div class="card shadow-lg">
+      <div class="card-body">
+        <h2 class="card-title text-center mb-4">Notes</h2>
+
+        <!-- Input + Add button -->
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Write a note here:" v-model="newNote" @keyup.enter="addNote">
+          <button class="btn btn-primary" @click="addNote">Add Note</button>
+        </div>
+
+        <!-- Notes list -->
+        <ul class="list-group" v-if="notes.length > 0">
+          <li class="list-group-item d-flex justify-content-between align-items-center" v-for="(note, index) in notes" :key="index">
+            <span>{{ note }}</span>
+            <button class="btn btn-sm btn-outline-danger" @click="deleteNote(index)">Delete</button>
+          </li>
+        </ul>
+
+        <!-- Empty state -->
+        <p class="text-muted text-center mt-3" v-else>No notes yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          newNote: "",
+          notes: []
+        };
+      },
+      methods: {
+        addNote() {
+          if (this.newNote.trim() !== "") {
+            this.notes.push(this.newNote.trim());
+            this.newNote = ""; // clear input
+          }
+        },
+        deleteNote(index) {
+          this.notes.splice(index, 1);
+        }
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>
